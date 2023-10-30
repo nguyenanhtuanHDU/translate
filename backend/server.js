@@ -1,6 +1,8 @@
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const express = require("express");
+// const translate = require("translate");
+const translate = require("translate-google");
 const http = require("http");
 const app = express();
 app.use(cookieParser());
@@ -18,10 +20,21 @@ const hostname = process.env.HOST_NAME;
 
 // const apiRoute = require("./src/routes/api");
 // const authRoute = require("./src/routes/auth");
-const path = require("path");
+app.post("/test", async (req, res) => {
+  const { text } = req.body;
+  let textTranslate = await translate(text, { to: "fr" });
+  //   translate(text, { to: "en" })
+  //     .then((res) => {
+  //       console.log(res);
+  //       textTranslate = res;
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
 
-app.get("/", (req, res) => {
-  res.send("Author: tuanna");
+  res.status(200).json({
+    data: textTranslate,
+  });
 });
 
 // app.use(express.static(path.join('./src', 'public')));
